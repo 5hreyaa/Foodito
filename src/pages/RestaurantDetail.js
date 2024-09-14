@@ -6,14 +6,22 @@ import { Button } from '../ui/Button';
 const RestaurantDetail = () => {
   const { id } = useParams();
   // In a real app, you would fetch the restaurant details based on the id
+<<<<<<< HEAD
   const restaurant = {  
+=======
+  const restaurant = {
+>>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
     id: 1,
     name: 'Tasty Bites',
     rating: 4.5,
     cuisines: ['Indian', 'Chinese'],
     deliveryTime: '30 min',
     price: '$$',
+<<<<<<< HEAD
     image: '/images/CavernBarandKitchen.jpg',
+=======
+    image: '/api/placeholder/800/400',
+>>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
     menu: [
       { id: 1, name: 'Butter Chicken', price: 12.99, description: 'Creamy tomato sauce with tender chicken pieces' },
       { id: 2, name: 'Vegetable Biryani', price: 10.99, description: 'Fragrant rice dish with mixed vegetables' },

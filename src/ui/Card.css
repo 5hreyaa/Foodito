@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Ensure horizontal scrolling */
 .card-container {
   display: flex;
@@ -48,3 +49,15 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+=======
+.card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+>>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6

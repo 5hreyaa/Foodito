@@ -1,20 +1,34 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Button } from '../ui/Button';
-import { Card, CardContent } from '../ui/Card'; // Ensure correct import path
-import { Input } from '../ui/Input';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent } from '../ui/Card'; // Ensure Card and CardContent are correctly imported
+import { Clock, Star } from 'lucide-react'; // Import necessary icons for display
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const Home = () => {
+  const [restaurants, setRestaurants] = useState([]); // State to store restaurants
+  const [selectedCuisine, setSelectedCuisine] = useState(null); // State to store selected cuisine
+  const [loading, setLoading] = useState(true); // State for loading state
+  const [error, setError] = useState(''); // State for error handling
+
+  // Fetch restaurant data from the API
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/restaurants'); // Adjust this URL to your API
+        const data = await response.json();
+        
+        setRestaurants(data); // Set the fetched restaurants in state
+        setLoading(false); // Set loading to false once data is fetched
+      } catch (error) {
+        console.error('Error fetching restaurants:', error);
+        setError('Failed to load restaurants'); // Handle error state
+        setLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, []); // Run only once when the component mounts
+
   // Define categories array
-=======
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React, { useRef, useState } from 'react';
-import { Button } from '../ui/Button';
-import { Card, CardContent } from '../ui/Card';
-import { Input } from '../ui/Input';
-
-const Home = () => {
->>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
   const categories = [
     { name: 'Indian Sweets', image: 'indiansweets.png' },
     { name: 'Biryani', image: 'biryani.png' },
@@ -33,121 +47,116 @@ const Home = () => {
     { name: 'Rolls', image: 'rolls.png' },
     { name: 'Pure Veg', image: 'pureveg.png' },
     { name: 'Noodles', image: 'noodles.png' },
-    { name: 'Pasta', image: 'pasta.png' }
-<<<<<<< HEAD
-
+    { name: 'Pasta', image: 'pasta.png' },
   ];
+
+  // Filter restaurants based on selected cuisine
+  const filteredRestaurants = selectedCuisine
+    ? restaurants.filter(restaurant => 
+        restaurant.cuisines.some(cuisine => 
+          cuisine.toLowerCase().includes(selectedCuisine.toLowerCase().trim())
+        )
+      )
+    : [];
+
+  // Handle cuisine selection with toggle
+  const handleCuisineClick = (categoryName) => {
+    if (selectedCuisine === categoryName) {
+      setSelectedCuisine(null); // Deselect if the same cuisine is clicked
+    } else {
+      setSelectedCuisine(categoryName); // Select the clicked cuisine
+    }
+  };
+
+  // Check loading state
+  if (loading) {
+    return <p>Loading restaurants...</p>; // Show loading text while fetching
+  }
+
+  // Check for errors
+  if (error) {
+    return <p>{error}</p>; // Show error message if there is an error
+  }
 
   return (
     <>
-     
-
       {/* Food Categories Section */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">What's on your mind?</h2>
-        {/* Horizontal scrolling container */}
         <div className="card-container">
           {categories.map((category, index) => (
-            <Card key={index} className="card">
+            <Card
+              key={index}
+              className={`card ${selectedCuisine === category.name ? 'selected' : ''}`} // Add class when selected
+              onClick={() => handleCuisineClick(category.name)} // Toggle the selected cuisine
+            >
               <CardContent className="card-content">
                 <img
-                  src={`/images/${category.image}`}
+                  src={`/images/${category.image}`} // Ensure correct path
                   alt={category.name}
-                  className="w-20 h-20 object-cover rounded-full mb-2"
+                  className="w-20 h-20 object-cover mb-2"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = `/api/placeholder/80/80`;
+                    e.target.src = '/api/placeholder/80/80'; // Placeholder in case of an error
                   }}
                 />
                 <p className="text-sm font-medium">{category.name}</p>
               </CardContent>
             </Card>
           ))}
-=======
-  ];
-
-  const [startIndex, setStartIndex] = useState(0);
-  const scrollRef = useRef(null);
-
-  const nextCategories = () => {
-    if (startIndex + 6 < categories.length) {
-      setStartIndex(startIndex + 6);
-    }
-  };
-
-  const prevCategories = () => {
-    if (startIndex - 6 >= 0) {
-      setStartIndex(startIndex - 6);
-    }
-  };
-
-  return (
-    <>
-      {/* Hero Section */}
-      <section className="bg-orange-500 text-white py-16 -mx-4 mb-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-4">Hungry? You're in the right place</h2>
-          <p className="text-xl mb-8">Order food from the best restaurants in town</p>
-          <div className="flex">
-            <Input
-              type="text"
-              placeholder="Enter your delivery location"
-              className="rounded-r-none w-96"
-            />
-            <Button className="bg-green-500 hover:bg-green-600 rounded-l-none">
-              Find Food
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* Food Categories */}
-      <section className="mb-12 relative">
-        <h2 className="text-2xl font-semibold mb-6">What's on your mind?</h2>
-        <div className="relative">
-          <div ref={scrollRef} className="flex space-x-6 overflow-x-hidden">
-            {categories.slice(startIndex, startIndex + 6).map((category, index) => (
-              <Card key={index} className="flex-shrink-0 w-32 h-40 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg transition-shadow">
-                <CardContent className="p-2 text-center">
-                  <img 
-                    src={`/images/${category.image}`} 
-                    alt={category.name} 
-                    className="w-20 h-20 object-cover rounded-full mb-2"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = `/api/placeholder/80/80`;
-                    }}
-                  />
-                  <p className="text-sm font-medium">{category.name}</p>
-                </CardContent>
-              </Card>
-            ))}
+      {/* Restaurant List Section */}
+      {selectedCuisine && (
+        <div className="restaurants">
+          <h2 className="header-text">Restaurants serving {selectedCuisine}</h2>
+          <div className="restaurant-grid">
+            {filteredRestaurants.length > 0 ? (
+              filteredRestaurants.map((restaurant) => (
+                <Link
+                  to={`/restaurant/${restaurant.id}`}
+                  key={restaurant.id}
+                  className="restaurant-card-link"
+                >
+                  <div className="restaurant-card">
+                    <img
+                      src={restaurant.image}
+                      alt={restaurant.name}
+                      className="restaurant-image"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/api/placeholder/320/240';
+                      }}
+                    />
+                    <div className="restaurant-details">
+                      <h3 className="restaurant-name">{restaurant.name}</h3>
+                      <p className="restaurant-cuisines">
+                        {restaurant.cuisines.join(', ')}
+                      </p>
+                      <div className="restaurant-info">
+                        <span className="restaurant-rating">
+                          <Star className="icon" />
+                          {restaurant.rating}
+                        </span>
+                        <span className="restaurant-time">
+                          <Clock className="icon" />
+                          {restaurant.deliveryTime}
+                        </span>
+                        <span className="restaurant-price">{restaurant.price}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="no-results">No restaurants found for this cuisine.</p>
+            )}
           </div>
-          {startIndex > 0 && (
-            <Button 
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-gray-800 shadow-lg"
-              onClick={prevCategories}
-            >
-              <ChevronLeft size={24} />
-            </Button>
-          )}
-          {startIndex + 6 < categories.length && (
-            <Button 
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-gray-800 shadow-lg"
-              onClick={nextCategories}
-            >
-              <ChevronRight size={24} />
-            </Button>
-          )}
->>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
         </div>
-      </section>
+      )}
     </>
   );
 };
 
-<<<<<<< HEAD
 export default Home;
-=======
-export default Home;
->>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6

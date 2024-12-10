@@ -1,0 +1,119 @@
+.about-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  .about-page h1, .about-page h2, .about-page h3 {
+    color: #de1010;
+  }
+  
+  .hero {
+    background-color: #dc9595;
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-content {
+    max-width: 800px;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .animation-container {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 2rem;
+  }
+  
+  .delivery-animation {
+    width: 100%;
+    height: auto;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes bounce {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .our-story, .what-we-do, .our-impact, .leadership, .join-us {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .feature-grid, .impact-grid, .leader-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .feature, .impact-stat, .leader {
+    text-align: center;
+  }
+  
+  .impact-stat h3 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .leader img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 20px; /* Adds a 20px gap between the links */
+    justify-content: center; /* Center the buttons horizontally */
+    margin-top: 20px; /* Adds some space above the buttons */
+  }
+  
+  .cta-button {
+    background-color: #0073b1; /* LinkedIn blue color */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background-color: #005582; /* Darker blue on hover */
+  }
+  
+  
+  @media (max-width: 768px) {
+    .feature-grid, .impact-grid, .leader-grid {
+      grid-template-columns: 1fr;
+    }
+  }

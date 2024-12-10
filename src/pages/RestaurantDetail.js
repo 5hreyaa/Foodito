@@ -1,66 +1,119 @@
-import { Clock, Star } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Button } from '../ui/Button';
+import { useCart } from '../context/CartContext';
+import './restaurantDetail.css';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
-  // In a real app, you would fetch the restaurant details based on the id
-<<<<<<< HEAD
-  const restaurant = {  
-=======
-  const restaurant = {
->>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
-    id: 1,
-    name: 'Tasty Bites',
-    rating: 4.5,
-    cuisines: ['Indian', 'Chinese'],
-    deliveryTime: '30 min',
-    price: '$$',
-<<<<<<< HEAD
-    image: '/images/CavernBarandKitchen.jpg',
-=======
-    image: '/api/placeholder/800/400',
->>>>>>> 81d6f676bbb29529aa213f5d67a9931bf509b3f6
-    menu: [
-      { id: 1, name: 'Butter Chicken', price: 12.99, description: 'Creamy tomato sauce with tender chicken pieces' },
-      { id: 2, name: 'Vegetable Biryani', price: 10.99, description: 'Fragrant rice dish with mixed vegetables' },
-      { id: 3, name: 'Paneer Tikka', price: 9.99, description: 'Grilled cottage cheese with spices' },
-    ]
+  const [restaurant, setRestaurant] = useState(null);
+  const [error, setError] = useState(null);
+  const { cartItems, addToCart, removeFromCart } = useCart();
+
+  useEffect(() => {
+    const fetchRestaurantDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/restaurants/${id}`);
+        setRestaurant(response.data);
+      } catch (error) {
+        console.error('Error fetching restaurant details:', error);
+        setError('Could not fetch restaurant details. Please try again later.');
+      }
+    };
+    fetchRestaurantDetails();
+  }, [id]);
+
+  if (error) return <p>{error}</p>;
+  if (!restaurant) return <p>Loading...</p>;
+
+  const getItemQuantity = (itemId) => {
+    const cartItem = cartItems.find(item => item.id === itemId);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
+  const CartControls = ({ item }) => {
+    const quantity = getItemQuantity(item.id);
+
+    if (quantity === 0) {
+      return (
+        <button 
+          className="add-button" 
+          onClick={() => addToCart(item)}
+        >
+          ADD
+        </button>
+      );
+    }
+
+    return (
+      <div className="quantity-controls">
+        <button 
+          className="quantity-button"
+          onClick={() => removeFromCart(item.id)}
+        >
+          −
+        </button>
+        <span className="quantity-display">{quantity}</span>
+        <button 
+          className="quantity-button"
+          onClick={() => addToCart(item)}
+        >
+          +
+        </button>
+      </div>
+    );
   };
 
   return (
-    <div>
-      <img src={restaurant.image} alt={restaurant.name} className="w-full h-64 object-cover mb-6" />
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <h2 className="text-3xl font-semibold mb-2">{restaurant.name}</h2>
-          <p className="text-gray-600 mb-2">{restaurant.cuisines.join(', ')}</p>
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center text-green-600">
-              <Star className="h-5 w-5 mr-1 fill-current" />
-              {restaurant.rating}
-            </span>
-            <span className="flex items-center text-gray-600">
-              <Clock className="h-5 w-5 mr-1" />
-              {restaurant.deliveryTime}
-            </span>
-            <span className="text-gray-600">{restaurant.price}</span>
+    <div className="page-container">
+      <div className="restaurant-detail-container">
+        {/* Restaurant Header Section */}
+        <div className="restaurant-header">
+          <div className="restaurant-info">
+            <div className="restaurant-main-info">
+              <h2 className="restaurant-name">{restaurant.name}</h2>
+              <div className="restaurant-basic-details">
+                <p className="cuisine-text">{restaurant.cuisines.join(', ')}</p>
+                <p className="area-text">{restaurant.area}</p>
+              </div>
+              <div className="restaurant-metrics">
+                <div className="metric">
+                  <span className="metric-value">{restaurant.deliveryTime}</span>
+                  <span className="metric-label">mins</span>
+                </div>
+                <div className="metric">
+                  <span className="metric-value">{restaurant.rating}</span>
+                  <span className="metric-label">rating</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="restaurant-image-container">
+            <img src={restaurant.image} alt={restaurant.name} className="restaurant-image" />
           </div>
         </div>
-      </div>
-      <h3 className="text-2xl font-semibold mb-4">Menu</h3>
-      <div className="space-y-4">
-        {restaurant.menu.map((item) => (
-          <div key={item.id} className="flex justify-between items-center border-b pb-4">
-            <div>
-              <h4 className="text-lg font-semibold">{item.name}</h4>
-              <p className="text-gray-600">{item.description}</p>
-              <p className="font-semibold">${item.price.toFixed(2)}</p>
-            </div>
-            <Button>Add to Cart</Button>
-          </div>
-        ))}
+
+        <hr className="separator" />
+
+        {/* Menu Section */}
+        <div className="menu-section">
+          <h3>Menu ({restaurant.menu.length})</h3>
+          <ul className="menu-list">
+            {restaurant.menu.map((item) => (
+              <li key={item.id} className="menu-item">
+                <div className="item-details">
+                  <h4>{item.name}</h4>
+                  <p className="item-price">₹{item.price}</p>
+                  <p className="item-description">{item.description}</p>
+                </div>
+                <div className="item-image-container">
+                  <img src={item.image} alt={item.name} className="item-image" />
+                  <CartControls item={item} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -1,85 +1,84 @@
 /* restaurants.css */
 
 .restaurants {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .header-text {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    text-align: center; /* Center the header */
-  }
-  
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-text {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center; /* Center the header */
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two items per row */
+  gap: 2rem; /* Space between grid items */
+}
+
+.restaurant-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+}
+
+.restaurant-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.restaurant-details {
+  padding: 1rem;
+}
+
+.restaurant-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-cuisines {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.restaurant-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+}
+
+.restaurant-rating,
+.restaurant-time,
+.restaurant-price {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.restaurant-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .restaurant-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two items per row */
-    gap: 2rem; /* Space between grid items */
+    grid-template-columns: 1fr; /* One item per row on smaller screens */
   }
-  
-  .restaurant-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .restaurant-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .restaurant-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .restaurant-details {
-    padding: 1rem;
-  }
-  
-  .restaurant-name {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .restaurant-cuisines {
-    color: #666;
-    margin-bottom: 1rem;
-  }
-  
-  .restaurant-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #333;
-  }
-  
-  .restaurant-rating,
-  .restaurant-time,
-  .restaurant-price {
-    display: flex;
-    align-items: center;
-  }
-  
-  .icon {
-    margin-right: 0.5rem;
-  }
-  
-  .restaurant-card-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .restaurant-grid {
-      grid-template-columns: 1fr; /* One item per row on smaller screens */
-    }
-  }
-  
+}

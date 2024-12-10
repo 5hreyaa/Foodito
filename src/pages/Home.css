@@ -1,0 +1,73 @@
+.restaurants {
+  margin: 20px 0;
+}
+
+.header-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 16px; /* Space between cards */
+  justify-items: center;
+  margin-top: 20px;
+}
+
+.restaurant-card-link {
+  text-decoration: none; /* Remove underline from links */
+}
+
+.restaurant-card {
+  width: 100%;
+  max-width: 300px; /* Max width for each card */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.restaurant-image {
+  width: 100%;
+  height: 180px; /* Fixed height for images */
+  object-fit: cover; /* Ensure images cover their container */
+}
+
+.restaurant-details {
+  padding: 16px;
+  text-align: left;
+}
+
+.restaurant-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.restaurant-cuisines {
+  font-size: 14px;
+  color: #555; /* Grey color for cuisines */
+  margin-bottom: 8px;
+}
+
+.restaurant-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #777; /* Light grey for restaurant info */
+}
+
+.icon {
+  margin-right: 4px; /* Space between icon and text */
+  vertical-align: middle; /* Align icons with text */
+}

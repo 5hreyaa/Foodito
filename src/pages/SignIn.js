@@ -1,54 +1,87 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './SignIn.css';
 
 const SignIn = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: ''
+  });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleInputChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setError(''); 
+  };
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    if (phoneNumber === '1234' && password === 'hello') {
-      setSuccess('Successfully signed in!');
-      setError('');
-      // Redirect to the home page
-      navigate('/');
-    } else {
-      setError('Invalid phone number or password.');
-      setSuccess('');
+    setError('');
+    setLoading(true);
+
+    if (!credentials.username || !credentials.password) {
+      setError('Please enter both username and password.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', credentials);
+
+      if (response.status === 200) {
+     
+        localStorage.setItem('userId', response.data.user.id);
+        localStorage.setItem('username', response.data.user.username);
+
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error during sign-in:', error);
+      setError(error.response?.data?.message || 'Incorrect username or password');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="signin-container">
-      <h2 className="signin-title">Sign In</h2>
-      <form className="signin-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="phone-number">Phone Number</label>
-          <input
-            type="text"
-            id="phone-number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+      <h2>Sign In</h2>
+      <form onSubmit={handleSignIn} className="signin-form">
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={credentials.username}
+          onChange={handleInputChange}
+          disabled={loading}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={credentials.password}
+          onChange={handleInputChange}
+          disabled={loading}
+          required
+        />
+        
         {error && <p className="error-message">{error}</p>}
-        {success && <p className="success-message">{success}</p>}
-        <button type="submit" className="submit-button">Sign In</button>
+        
+        <button 
+          type="submit" 
+          className={`signin-button ${loading ? 'loading' : ''}`}
+          disabled={loading}
+        >
+          {loading ? 'Signing In...' : 'Sign In'}
+        </button>
+
+        <p className="signup-prompt">
+          Don't have an account? <a href="/signup">Sign Up</a>
+        </p>
       </form>
     </div>
   );
